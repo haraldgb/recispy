@@ -3,6 +3,7 @@ import { ApiError, errorResponse } from './errors.js';
 import { logger } from './logger.js';
 import { authRoutes } from './routes/auth.js';
 import { meRoutes } from './routes/me.js';
+import { recipesRoutes } from './routes/recipes.js';
 
 export type AppEnv = { Variables: { userId?: number; isAllowed?: boolean | null } };
 
@@ -12,6 +13,7 @@ export function createApp() {
   app.get('/api/health', (c) => c.json({ ok: true }));
   app.route('/api/auth', authRoutes);
   app.route('/api/me', meRoutes);
+  app.route('/api/recipes', recipesRoutes);
 
   app.notFound((c) => c.json(errorResponse('not_found', 'Route not found'), 404));
 
