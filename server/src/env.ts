@@ -6,7 +6,7 @@ const schema = z.object({
   ANTHROPIC_API_KEY: z.string().min(1),
   GOOGLE_CLIENT_ID: z.string().min(1),
   JWT_SECRET: z.string().min(32, 'JWT_SECRET must be at least 32 characters'),
-  PORT: z.coerce.number().int().positive(),
+  PORT: z.coerce.number().int().nonnegative(),
   NODE_ENV: z.enum(['development', 'production', 'test']),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']),
 });
