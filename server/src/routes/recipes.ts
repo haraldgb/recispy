@@ -11,12 +11,27 @@ import {
   addUserNote,
 } from '../recipes/repo.js';
 import { recipePayloadSchema, userNoteSchema } from '../recipes/types.js';
+import { extractRecipe } from '../extraction/extract.js';
 
 type Env = { Variables: { userId?: number; isAllowed?: boolean | null } };
 
 export const recipesRoutes = new Hono<Env>();
 
 recipesRoutes.use('*', sessionMiddleware, allowlistMiddleware);
+
+recipesRoutes.post('/extract', async (c) => {
+  let body: { url?: string; text?: string };
+  try {
+    body = await c.req.json();
+  } catch {
+    throw new ApiError(400, 'invalid_input', 'JSON body required');
+  }
+  if (!body || (!body.url && !body.text)) {
+    throw new ApiError(400, 'invalid_input', 'url or text required');
+  }
+  const recipe = await extractRecipe({ url: body.url, text: body.text });
+  return c.json({ recipe });
+});
 
 recipesRoutes.get('/', async (c) => {
   const userId = c.get('userId') as number;
