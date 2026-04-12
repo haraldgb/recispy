@@ -1,13 +1,17 @@
 import { Hono } from 'hono';
 import { ApiError, errorResponse } from './errors.js';
 import { logger } from './logger.js';
+import { authRoutes } from './routes/auth.js';
+import { meRoutes } from './routes/me.js';
 
-export type AppEnv = { Variables: { userId?: number } };
+export type AppEnv = { Variables: { userId?: number; isAllowed?: boolean | null } };
 
 export function createApp() {
   const app = new Hono<AppEnv>();
 
   app.get('/api/health', (c) => c.json({ ok: true }));
+  app.route('/api/auth', authRoutes);
+  app.route('/api/me', meRoutes);
 
   app.notFound((c) => c.json(errorResponse('not_found', 'Route not found'), 404));
 
