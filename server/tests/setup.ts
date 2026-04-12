@@ -1,8 +1,10 @@
+import { resolve } from 'node:path';
+try { process.loadEnvFile(resolve(import.meta.dirname!, '..', '.env')); } catch {}
+
 import { afterAll, beforeAll, beforeEach } from 'vitest';
 import pg from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
-import { sql } from 'drizzle-orm';
 import * as schema from '../src/db/schema.js';
 
 const TEST_DB_URL =
