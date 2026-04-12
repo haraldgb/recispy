@@ -1,0 +1,20 @@
+[Unit]
+Description=Recispy backend
+After=network.target postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=recispy
+Group=recispy
+WorkingDirectory=/srv/recispy/server
+EnvironmentFile=/etc/recispy/recispy.env
+ExecStart=/usr/bin/node /srv/recispy/server/index.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
