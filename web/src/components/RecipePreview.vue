@@ -5,12 +5,12 @@ import type { RecipeDraft, Difficulty } from '@/api/types.js';
 const props = defineProps<{ draft: RecipeDraft }>();
 const emit = defineEmits<{ save: [draft: RecipeDraft]; discard: [] }>();
 
-const local = reactive<RecipeDraft>(structuredClone(props.draft));
+const local = reactive<RecipeDraft>(JSON.parse(JSON.stringify(props.draft)));
 
 watch(
   () => props.draft,
   (next) => {
-    Object.assign(local, structuredClone(next));
+    Object.assign(local, JSON.parse(JSON.stringify(next)));
   },
 );
 
